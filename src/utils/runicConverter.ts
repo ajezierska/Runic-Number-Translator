@@ -2,7 +2,6 @@ import { Digit, RunicLineNumber, ConversionResult } from '../types/rune.types';
 import { getRunicLineNumbersForDigit, getAllRunicLinesNumbers } from './lineMapper';
 
 export function convertNumberToRune(number: number): ConversionResult {
-  validateNumber(number);
   const digits = splitNumberIntoDigits(number);
 
   let lineNumberArrays: RunicLineNumber[] = [];
@@ -24,18 +23,6 @@ export function convertNumberToRune(number: number): ConversionResult {
     number,
     runicLineNumbers: getAllRunicLinesNumbers(lineNumberArrays),
   };
-}
-
-function validateNumber(number: number): void {
-  if (!Number.isInteger(number)) {
-    throw new Error(`Number must be an integer, got: ${number}`);
-  }
-  if (number < 0) {
-    throw new Error(`Number must be non-negative, got: ${number}`);
-  }
-  if (number > 9999) {
-    throw new Error(`Number must be ≤ 9999, got: ${number}`);
-  }
 }
 
 export function splitNumberIntoDigits(number: number): {

@@ -114,22 +114,22 @@ describe('downloadSVG', () => {
 
   beforeEach(() => {
     // Save original Blob
-    originalBlob = global.Blob;
+    originalBlob = globalThis.Blob;
 
     // Mock Blob constructor as a class
     blobConstructorSpy = vi.fn();
-    global.Blob = class MockBlob extends originalBlob {
+    globalThis.Blob = class MockBlob extends originalBlob {
       constructor(content: BlobPart[], options?: BlobPropertyBag) {
         super(content, options);
-        blobConstructorSpy(content, options as BlobPropertyBag);
+        blobConstructorSpy(content, options as BlobPropertyBag);  
       }
     } as any;
 
     // Mock URL methods
     createObjectURLMock = vi.fn(() => 'blob:mock-url');
     revokeObjectURLMock = vi.fn();
-    global.URL.createObjectURL = createObjectURLMock as unknown as (blob: Blob) => string;
-    global.URL.revokeObjectURL = revokeObjectURLMock as unknown as () => void;
+    globalThis.URL.createObjectURL = createObjectURLMock as unknown as (blob: Blob) => string;
+    globalThis.URL.revokeObjectURL = revokeObjectURLMock as unknown as () => void;
 
     // Mock DOM methods
     appendChildSpy = vi.spyOn(document.body, 'appendChild');
@@ -149,7 +149,7 @@ describe('downloadSVG', () => {
 
   afterEach(() => {
     // Restore original Blob
-    global.Blob = originalBlob as unknown as typeof Blob;
+    globalThis.Blob = originalBlob as unknown as typeof Blob;
     vi.restoreAllMocks();
   });
 
@@ -286,7 +286,7 @@ describe('downloadSVG', () => {
       return 'blob:mock-url';
     });
 
-    appendChildSpy.mockImplementation((node) => {
+    appendChildSpy.mockImplementation((node: Node) => {
       callOrder.push('appendChild');
       return node;
     });
@@ -295,7 +295,7 @@ describe('downloadSVG', () => {
       callOrder.push('click');
     });
 
-    removeChildSpy.mockImplementation((node) => {
+    removeChildSpy.mockImplementation((node: Node) => {
       callOrder.push('removeChild');
       return node;
     });

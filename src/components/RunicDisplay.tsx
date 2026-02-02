@@ -1,16 +1,13 @@
-import { RunicLineNumber } from '../types/rune.types';
-import { generateRuneSVG } from '../utils/svgGenerator';
+import { RunicObject } from '../types/rune.types';
+import { downloadSVG, generateRuneSVG } from '../utils/svgGenerator';
 
-interface RunicDisplayProps {
-  runicLineNumbers: RunicLineNumber[];
-}
 
 export function RunicDisplay({
-  runicLineNumbers,
-}: RunicDisplayProps) {
-  const isEmpty = runicLineNumbers.length === 0;
+  runicObject,
+}: { runicObject: RunicObject }) {
+  const isEmpty = runicObject.runicLineNumbers.length === 0;
 
-  const svgString = generateRuneSVG(runicLineNumbers);
+  const svgString = generateRuneSVG(runicObject.runicLineNumbers);
 
   return (
     <div className="w-full max-w-md mx-auto">
@@ -19,9 +16,16 @@ export function RunicDisplay({
           <div
             dangerouslySetInnerHTML={{ __html: svgString }}
             className="w-full max-w-[300px] flex justify-center items-center"
-            aria-label="Runic representation of entered number"
+            aria-label={`Runic representation of number ${runicObject.inputValue}`}
           />
         }
+        <button
+          onClick={() => downloadSVG(svgString, runicObject.inputValue)}
+          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md disabled:opacity-50"
+          disabled={isEmpty}
+        >
+          📥 Download SVG
+        </button>
       </div>
     </div>
   );

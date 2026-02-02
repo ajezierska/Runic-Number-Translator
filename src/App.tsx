@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { RunicForm } from './components/RunicForm';
 import { RunicDisplay } from './components/RunicDisplay';
 import { convertNumberToRune } from './utils/runicConverter';
-import { RunicLineNumber } from './types/rune.types';
+import { RunicObject } from './types/rune.types';
+
 
 function App() {
-  const [runicLineNumbers, setRunicLineNumbers] = useState<RunicLineNumber[]>([]);
+  const [runicObject, setRunicObject] = useState<RunicObject>({runicLineNumbers: [], inputValue: 0})
 
   const handleNumberSubmit = (number: number) => {
     const result = number ? convertNumberToRune(number).runicLineNumbers : [];
-    setRunicLineNumbers(result);
+    setRunicObject({runicLineNumbers: result, inputValue: number});
   };
 
   return (
@@ -37,7 +38,7 @@ function App() {
               Runic representation
             </h2>
             <RunicDisplay
-              runicLineNumbers={runicLineNumbers}
+              runicObject={runicObject}
             />
           </div>
         </main>

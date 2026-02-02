@@ -19,3 +19,8 @@ export interface ConversionResult {
   number: number;
   runicLineNumbers: RunicLineNumber[];
 }
+
+export interface RunicObject {
+  runicLineNumbers: RunicLineNumber[];
+  inputValue: number;
+}

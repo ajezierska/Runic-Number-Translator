@@ -44,8 +44,10 @@ export function RunicForm({ onNumberSubmit}: RunicFormProps) {
   const error = validateInputInformation(inputValue);
 
   return (
-    <div className="w-full max-w-md">
+    <div className="w-full max-w-md h-[80px]">
     <input
+      aria-label="Enter the number"
+      id="runic-input"
       type="text"
       value={inputValue}
       onChange={handleChange}

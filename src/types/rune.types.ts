@@ -21,6 +21,6 @@ export interface ConversionResult {
 }
 
 export interface RunicObject {
-  runicLineNumbers: RunicLineNumber[];
+  svgString: string;
   inputValue: number;
 }

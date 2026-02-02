@@ -3,14 +3,15 @@ import { RunicForm } from './components/RunicForm';
 import { RunicDisplay } from './components/RunicDisplay';
 import { convertNumberToRune } from './utils/runicConverter';
 import { RunicObject } from './types/rune.types';
-
+import { downloadSVG, generateRuneSVG } from './utils/svgGenerator';
 
 function App() {
-  const [runicObject, setRunicObject] = useState<RunicObject>({runicLineNumbers: [], inputValue: 0})
+  const [runicObject, setRunicObject] = useState<RunicObject>({ svgString: '', inputValue: 0 })
 
   const handleNumberSubmit = (number: number) => {
     const result = number ? convertNumberToRune(number).runicLineNumbers : [];
-    setRunicObject({runicLineNumbers: result, inputValue: number});
+    const svgString = generateRuneSVG(result);
+    setRunicObject({ svgString: svgString, inputValue: number });
   };
 
   return (
@@ -26,11 +27,19 @@ function App() {
         </header>
 
         <main className="grid md:grid-cols-2 gap-8 items-start">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center h-full">
             <h2 className="text-xl font-semibold text-purple-800 mb-4">
               Enter the number
             </h2>
             <RunicForm onNumberSubmit={handleNumberSubmit} />
+
+            <button
+              onClick={() => downloadSVG(runicObject)}
+              className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-200 shadow-md disabled:opacity-50"
+              disabled={!runicObject.inputValue}
+            >
+              📥 Download SVG
+            </button>
           </div>
 
           <div className="flex flex-col items-center">

@@ -49,7 +49,7 @@ npm run test:ui
 # Run tests with coverage report
 npm run test:coverage
 ```
-```
+
 
 ## 📁 Project Structure
 

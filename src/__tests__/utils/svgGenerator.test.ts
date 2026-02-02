@@ -121,15 +121,15 @@ describe('downloadSVG', () => {
     global.Blob = class MockBlob extends originalBlob {
       constructor(content: BlobPart[], options?: BlobPropertyBag) {
         super(content, options);
-        blobConstructorSpy(content, options);
+        blobConstructorSpy(content, options as BlobPropertyBag);
       }
     } as any;
 
     // Mock URL methods
     createObjectURLMock = vi.fn(() => 'blob:mock-url');
     revokeObjectURLMock = vi.fn();
-    global.URL.createObjectURL = createObjectURLMock;
-    global.URL.revokeObjectURL = revokeObjectURLMock;
+    global.URL.createObjectURL = createObjectURLMock as unknown as (blob: Blob) => string;
+    global.URL.revokeObjectURL = revokeObjectURLMock as unknown as () => void;
 
     // Mock DOM methods
     appendChildSpy = vi.spyOn(document.body, 'appendChild');
@@ -141,7 +141,7 @@ describe('downloadSVG', () => {
     vi.spyOn(document, 'createElement').mockImplementation((tagName: string) => {
       const element = originalCreateElement(tagName);
       if (tagName === 'a') {
-        element.click = clickSpy;
+        element.click = clickSpy as unknown as () => void;
       }
       return element;
     });
@@ -149,13 +149,12 @@ describe('downloadSVG', () => {
 
   afterEach(() => {
     // Restore original Blob
-    global.Blob = originalBlob;
+    global.Blob = originalBlob as unknown as typeof Blob;
     vi.restoreAllMocks();
   });
 
   it('creates a blob with correct SVG content', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10, 13, 16],
       inputValue: 123,
       svgString: '<svg>test</svg>'
     };
@@ -170,7 +169,6 @@ describe('downloadSVG', () => {
 
   it('creates object URL from blob', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10],
       inputValue: 5,
       svgString: '<svg>test</svg>'
     };
@@ -182,7 +180,6 @@ describe('downloadSVG', () => {
 
   it('creates download link with correct attributes', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10, 13],
       inputValue: 42,
       svgString: '<svg>test</svg>'
     };
@@ -200,7 +197,6 @@ describe('downloadSVG', () => {
 
   it('triggers download by clicking the link', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10],
       inputValue: 999,
       svgString: '<svg>test</svg>'
     };
@@ -212,7 +208,6 @@ describe('downloadSVG', () => {
 
   it('removes link from DOM after download', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10],
       inputValue: 1,
       svgString: '<svg>test</svg>'
     };
@@ -226,7 +221,6 @@ describe('downloadSVG', () => {
 
   it('revokes object URL after download', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10],
       inputValue: 7,
       svgString: '<svg>test</svg>'
     };
@@ -246,7 +240,6 @@ describe('downloadSVG', () => {
 
     testCases.forEach(({ inputValue, expectedFilename }) => {
       const runicObject: RunicObject = {
-        runicLineNumbers: [10],
         inputValue,
         svgString: '<svg>test</svg>'
       };
@@ -267,7 +260,6 @@ describe('downloadSVG', () => {
     </svg>`;
 
     const runicObject: RunicObject = {
-      runicLineNumbers: [10, 13],
       inputValue: 100,
       svgString: complexSVG
     };
@@ -283,7 +275,6 @@ describe('downloadSVG', () => {
 
   it('completes download sequence in correct order', () => {
     const runicObject: RunicObject = {
-      runicLineNumbers: [10],
       inputValue: 5,
       svgString: '<svg>test</svg>'
     };

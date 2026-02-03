@@ -11,13 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    
+    - name: Setup Node
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
-    - run: npm ci
-    - run: npm run lint
-    - run: npm test
+    
+    - name: Install
+      run: npm ci
+    
+    - name: Lint
+      run: npm run lint
+    
+    - name: Test
+      run: npm test
 
   deploy:
     needs: test
@@ -25,14 +33,22 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
+    
+    - name: Setup Node
+      uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build
+    
+    - name: Install
+      run: npm ci
+    
+    - name: Build
+      run: npm run build
+    
     - name: Deploy Vercel
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       run: npx vercel --prod --yes

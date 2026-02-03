@@ -1,7 +1,7 @@
 import { RunicObject } from '../types/rune.types';
 
 export function RunicDisplay({ runicObject }: { runicObject: RunicObject }) {
-  const isEmpty = runicObject.svgString === '';
+  const isEmpty = runicObject.inputValue === 0;
 
   return (
     <div className="w-full max-w-md mx-auto">

@@ -1,4 +1,4 @@
-name: CI/CD Vercel - TYLKO TOKEN
+name: CI/CD Vercel
 
 on:
   push:
@@ -11,21 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Lint
-      run: npm run lint
-    
-    - name: Test
-      run: npm test
+    - run: npm ci
+    - run: npm run lint
+    - run: npm run test
 
   deploy:
     needs: test
@@ -34,19 +26,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Build
-      run: npm run build
-    
     - name: Deploy to Vercel
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      run: npx vercel --prod --yes
+      uses: vercel/action@1.1.0  # OFICJALNY!
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}  # automat!
+        vercel-args: '--prod'

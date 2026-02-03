@@ -1,4 +1,4 @@
-name: CI/CD Vercel Personal
+name: CI/CD Vercel - TYLKO TOKEN
 
 on:
   push:
@@ -12,13 +12,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup Node
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
     
-    - name: Install
+    - name: Install dependencies
       run: npm ci
     
     - name: Lint
@@ -34,21 +34,19 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Setup Node
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
     
-    - name: Install
+    - name: Install dependencies
       run: npm ci
     
     - name: Build
       run: npm run build
     
-    - name: Deploy Vercel
+    - name: Deploy to Vercel
       env:
         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
       run: npx vercel --prod --yes

@@ -35,7 +35,7 @@ export const downloadSVG = (runicObject: RunicObject): void => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `runa-${runicObject.inputValue || 'empty'}-lines.svg`;
+    link.download = `rune-for-${runicObject.inputValue || 'empty'}.svg`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

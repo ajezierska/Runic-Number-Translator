@@ -191,7 +191,7 @@ describe('downloadSVG', () => {
 
     expect(linkElement.tagName).toBe('A');
     expect(linkElement.href).toBe('blob:mock-url');
-    expect(linkElement.download).toBe('runa-42-lines.svg');
+    expect(linkElement.download).toBe('rune-for-42.svg');
   });
 
   it('triggers download by clicking the link', () => {
@@ -232,9 +232,9 @@ describe('downloadSVG', () => {
 
   it('generates correct filename for different input values', () => {
     const testCases = [
-      { inputValue: 1, expectedFilename: 'runa-1-lines.svg' },
-      { inputValue: 9999, expectedFilename: 'runa-9999-lines.svg' },
-      { inputValue: 42, expectedFilename: 'runa-42-lines.svg' },
+      { inputValue: 1, expectedFilename: 'rune-for-1.svg' },
+      { inputValue: 9999, expectedFilename: 'rune-for-9999.svg' },
+      { inputValue: 42, expectedFilename: 'rune-for-42.svg' },
     ];
 
     testCases.forEach(({ inputValue, expectedFilename }) => {

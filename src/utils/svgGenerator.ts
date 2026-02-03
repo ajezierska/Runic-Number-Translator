@@ -28,13 +28,19 @@ export function generateRuneSVG(runicLineNumbers: RunicLineNumber[]): string {
 }
 
 export const downloadSVG = (runicObject: RunicObject): void => {
-  const blob = new Blob([runicObject.svgString], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `runa-${runicObject.inputValue}-lines.svg`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  if (!runicObject.svgString) return;
+
+  try {
+    const blob = new Blob([runicObject.svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `runa-${runicObject.inputValue || 'empty'}-lines.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('SVG download failed:', error);
+  }
 };

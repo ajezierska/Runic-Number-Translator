@@ -1,31 +1,29 @@
 import { RunicLine, RunicLineNumber } from '../types/rune.types';
 
-
 /**
 * Definitions of all 25 runic lines with their SVG coordinates.
+* based on the image in helpers/runic-base-model.png
 *
 * Grid structure:
-* ┌─────────┬─────────┐
-* │   9  10 │ 11      │ <- Row 1 (y=20, y=60)
-* ├─────────┼─────────┤
-* │  12  13 │ 14      │ <- Row 2 (y=60, y=100)
-* ├─────────┼─────────┤
-* │  15  16 │ 17      │ <- Row 3 (y=100, y=140)
-* └─────────┴─────────┘
-* x=20 x=60 x=100
+* ┌─────────┬─────────┐ y=0
+* |         |         |   
+* ├─────────┼─────────┤ y=30
+* |         |         |    
+* ├─────────┼─────────┤ y=60
+* |         |         |   
+* └─────────┴─────────┘ y=90
+*  x=0     x=30     x=60
 *
 * Lines:
 * - 1-8: horizontal
 * - 9-17: vertical
 * - 18-25: diagonal
 *
-* ViewBox: 0 0 120 160
+* ViewBox: 0 0 60 90
 */
 
 
-/**
-* Array of all 25 runic lines
-*/
+//Array of all 25 runic lines
 export const RUNIC_LINES: Record<RunicLineNumber, RunicLine> = {
     // HORIZONTAL LINES (1-8)
     1: { number: 1, x1: 0, y1: 0, x2: 30, y2: 0, type: 'horizontal' }, // Top left
@@ -40,13 +38,13 @@ export const RUNIC_LINES: Record<RunicLineNumber, RunicLine> = {
 
     // VERTICAL LINES (9-17)
     9: { number: 9, x1: 0, y1: 0, x2: 0, y2: 30, type: 'vertical' }, // Left upper
-    10: { number: 10, x1: 30, y1: 0, x2: 30, y2: 30, type: 'vertical' }, // Center upper (ALWAYS)
+    10: { number: 10, x1: 30, y1: 0, x2: 30, y2: 30, type: 'vertical' }, // Center upper (ALWAYS present)
     11: { number: 11, x1: 60, y1: 0, x2: 60, y2: 30, type: 'vertical' }, // Right upper
     12: { number: 12, x1: 0, y1: 30, x2: 0, y2: 60, type: 'vertical' }, // Left middle
-    13: { number: 13, x1: 30, y1: 30, x2: 30, y2: 60, type: 'vertical' }, // Center middle (ALWAYS)
+    13: { number: 13, x1: 30, y1: 30, x2: 30, y2: 60, type: 'vertical' }, // Center middle (ALWAYS present)
     14: { number: 14, x1: 60, y1: 30, x2: 60, y2: 60, type: 'vertical' }, // Right middle
     15: { number: 15, x1: 0, y1: 60, x2: 0, y2: 90, type: 'vertical' }, // Left lower
-    16: { number: 16, x1: 30, y1: 60, x2: 30, y2: 90, type: 'vertical' }, // Center lower (ALWAYS)
+    16: { number: 16, x1: 30, y1: 60, x2: 30, y2: 90, type: 'vertical' }, // Center lower (ALWAYS present)
     17: { number: 17, x1: 60, y1: 60, x2: 60, y2: 90, type: 'vertical' }, // Right lower
 
 
@@ -61,20 +59,14 @@ export const RUNIC_LINES: Record<RunicLineNumber, RunicLine> = {
     25: { number: 25, x1: 60, y1: 60, x2: 30, y2: 90, type: 'diagonal' }, // Right lower NE-SW
 };
 
-
-/**
-* Lines that are always present in every rune (base)
-*/
+//Lines that are always present in every rune (base)
 export const BASE_RUNIC_LINES: RunicLineNumber[] = [10, 13, 16];
 
-
-/**
-* SVG viewBox dimensions
-*/
+// SVG viewBox dimensions
 export const SVG_CONFIG = {
     width: 70,
     height: 100,
-    viewBox: '-5 -5 70 100',
+    viewBox: '-5 -5 70 100', // viewBox + margins
     strokeWidth: 4,
     strokeColor: '#4c1d95',
     strokeLinecap: 'round' as const,

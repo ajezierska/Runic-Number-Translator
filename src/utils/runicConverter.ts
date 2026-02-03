@@ -7,16 +7,16 @@ export function convertNumberToRune(number: number): ConversionResult {
   let lineNumberArrays: RunicLineNumber[] = [];
 
   if (digits.thousands !== null) {
-    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.thousands, 'thousands')]
+    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.thousands, 'thousands')];
   }
   if (digits.hundreds !== null) {
-    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.hundreds, 'hundreds')]
+    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.hundreds, 'hundreds')];
   }
   if (digits.tens !== null) {
-    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.tens, 'tens')]
+    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.tens, 'tens')];
   }
   if (digits.units !== null) {
-    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.units, 'units')]
+    lineNumberArrays = [...lineNumberArrays, ...getRunicLineNumbersForDigit(digits.units, 'units')];
   }
 
   return {

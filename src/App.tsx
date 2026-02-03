@@ -6,7 +6,7 @@ import { RunicObject } from './types/rune.types';
 import { downloadSVG, generateRuneSVG } from './utils/svgGenerator';
 
 function App() {
-  const [runicObject, setRunicObject] = useState<RunicObject>({ svgString: '', inputValue: 0 })
+  const [runicObject, setRunicObject] = useState<RunicObject>({ svgString: '', inputValue: 0 });
 
   const handleNumberSubmit = (number: number) => {
     const result = number ? convertNumberToRune(number).runicLineNumbers : [];
@@ -18,19 +18,13 @@ function App() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-4xl w-full">
         <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-purple-900 mb-2">
-            Runic Number Translator
-          </h1>
-          <p className="text-purple-700">
-            Translate numbers to their runic representation (1 - 9999)
-          </p>
+          <h1 className="text-4xl font-bold text-purple-900 mb-2">Runic Number Translator</h1>
+          <p className="text-purple-700">Translate numbers to their runic representation (1 - 9999)</p>
         </header>
 
         <main className="grid md:grid-cols-2 gap-8 items-start">
           <div className="flex flex-col items-center h-full">
-            <h2 className="text-xl font-semibold text-purple-800 mb-4">
-              Enter the number
-            </h2>
+            <h2 className="text-xl font-semibold text-purple-800 mb-4">Enter the number</h2>
             <RunicForm onNumberSubmit={handleNumberSubmit} />
 
             <button
@@ -43,12 +37,8 @@ function App() {
           </div>
 
           <div className="flex flex-col items-center">
-            <h2 className="text-xl font-semibold text-purple-800 mb-4">
-              Runic representation
-            </h2>
-            <RunicDisplay
-              runicObject={runicObject}
-            />
+            <h2 className="text-xl font-semibold text-purple-800 mb-4">Runic representation</h2>
+            <RunicDisplay runicObject={runicObject} />
           </div>
         </main>
       </div>

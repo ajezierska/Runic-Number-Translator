@@ -58,6 +58,12 @@ npm run lint
 
 # Run ESLint and automatically fix issues
 npm run lint:fix
+
+# Format code with Prettier
+npm run format
+
+# Check code formatting with Prettier
+npm run format:check
 ```
 
 
@@ -85,5 +91,5 @@ runic-app/
 - **Build Tool**: Vite 7
 - **Styling**: Tailwind CSS 4
 - **Testing**: Vitest + React Testing Library
-- **Linting**: ESLint 9 with TypeScript and React plugins
+- **Code Quality**: ESLint 9 + Prettier 3
 - **Version Control**: Git

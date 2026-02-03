@@ -1,12 +1,12 @@
 import { generateRuneSVG, downloadSVG } from '../../utils/svgGenerator';
 import { RunicLineNumber, RunicObject } from '../../types/rune.types';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from 'vitest';
 
 describe('svgGenerator', () => {
   it('generates valid SVG string', () => {
     const lines: RunicLineNumber[] = [10, 13, 16, 2];
     const svg = generateRuneSVG(lines);
-    
+
     expect(svg).toMatch(/^<svg/);
     expect(svg).toMatch(/viewBox="-5 -5 70 100"/);
     expect(svg).toMatch(/stroke="#4c1d95"/);
@@ -16,14 +16,14 @@ describe('svgGenerator', () => {
   it('contains all required lines', () => {
     const lines: RunicLineNumber[] = [1, 10];
     const svg = generateRuneSVG(lines);
-    expect(svg).toContain('x1="0" y1="0" x2="30" y2="0"');  // line 1
+    expect(svg).toContain('x1="0" y1="0" x2="30" y2="0"'); // line 1
     expect(svg).toContain('x1="30" y1="0" x2="30" y2="30"'); // line 10
   });
 
   it('generates SVG with correct viewBox dimensions', () => {
     const lines: RunicLineNumber[] = [10, 13, 16];
     const svg = generateRuneSVG(lines);
-    
+
     expect(svg).toContain('viewBox="-5 -5 70 100"');
     expect(svg).toContain('width="70"');
     expect(svg).toContain('height="100"');
@@ -32,7 +32,7 @@ describe('svgGenerator', () => {
   it('includes stroke styling', () => {
     const lines: RunicLineNumber[] = [10];
     const svg = generateRuneSVG(lines);
-    
+
     expect(svg).toContain('stroke="#4c1d95"');
     expect(svg).toContain('stroke-width="4"');
     expect(svg).toContain('stroke-linecap="round"');
@@ -41,7 +41,7 @@ describe('svgGenerator', () => {
   it('generates correct number of line elements', () => {
     const lines: RunicLineNumber[] = [1, 2, 3, 10, 13];
     const svg = generateRuneSVG(lines);
-    
+
     const lineMatches = svg.match(/<line/g);
     expect(lineMatches?.length).toBe(5);
   });
@@ -49,7 +49,7 @@ describe('svgGenerator', () => {
   it('handles empty array', () => {
     const lines: RunicLineNumber[] = [];
     const svg = generateRuneSVG(lines);
-    
+
     expect(svg).toMatch(/^<svg/);
     expect(svg).toContain('</svg>');
   });
@@ -57,16 +57,16 @@ describe('svgGenerator', () => {
   it('generates SVG with all base lines', () => {
     const lines: RunicLineNumber[] = [10, 13, 16];
     const svg = generateRuneSVG(lines);
-    
-    expect(svg).toContain('x1="30" y1="0" x2="30" y2="30"');   // line 10
-    expect(svg).toContain('x1="30" y1="30" x2="30" y2="60"');  // line 13
-    expect(svg).toContain('x1="30" y1="60" x2="30" y2="90"');  // line 16
+
+    expect(svg).toContain('x1="30" y1="0" x2="30" y2="30"'); // line 10
+    expect(svg).toContain('x1="30" y1="30" x2="30" y2="60"'); // line 13
+    expect(svg).toContain('x1="30" y1="60" x2="30" y2="90"'); // line 16
   });
 
   it('generates complex rune with multiple lines', () => {
     const lines: RunicLineNumber[] = [1, 2, 7, 8, 9, 17, 10, 13, 16];
     const svg = generateRuneSVG(lines);
-    
+
     const lineMatches = svg.match(/<line/g);
     expect(lineMatches?.length).toBe(9);
   });
@@ -74,14 +74,14 @@ describe('svgGenerator', () => {
   it('includes xmlns attribute', () => {
     const lines: RunicLineNumber[] = [10];
     const svg = generateRuneSVG(lines);
-    
+
     expect(svg).toContain('xmlns="http://www.w3.org/2000/svg"');
   });
 
   it('wraps lines in a group element', () => {
     const lines: RunicLineNumber[] = [10, 13];
     const svg = generateRuneSVG(lines);
-    
+
     expect(svg).toContain('<g');
     expect(svg).toContain('</g>');
   });
@@ -89,27 +89,27 @@ describe('svgGenerator', () => {
   it('generates diagonal lines correctly', () => {
     const lines: RunicLineNumber[] = [18, 19]; // diagonal lines
     const svg = generateRuneSVG(lines);
-    
-    expect(svg).toContain('x1="0" y1="0" x2="30" y2="30"');   // line 18
-    expect(svg).toContain('x1="30" y1="0" x2="0" y2="30"');   // line 19
+
+    expect(svg).toContain('x1="0" y1="0" x2="30" y2="30"'); // line 18
+    expect(svg).toContain('x1="30" y1="0" x2="0" y2="30"'); // line 19
   });
 
   it('generates horizontal lines correctly', () => {
     const lines: RunicLineNumber[] = [1, 2];
     const svg = generateRuneSVG(lines);
-    
-    expect(svg).toContain('x1="0" y1="0" x2="30" y2="0"');    // line 1
-    expect(svg).toContain('x1="30" y1="0" x2="60" y2="0"');   // line 2
+
+    expect(svg).toContain('x1="0" y1="0" x2="30" y2="0"'); // line 1
+    expect(svg).toContain('x1="30" y1="0" x2="60" y2="0"'); // line 2
   });
 });
 
 describe('downloadSVG', () => {
-  let createObjectURLMock: ReturnType<typeof vi.fn>;
-  let revokeObjectURLMock: ReturnType<typeof vi.fn>;
+  let createObjectURLMock: Mock;
+  let revokeObjectURLMock: Mock;
   let appendChildSpy: ReturnType<typeof vi.spyOn>;
   let removeChildSpy: ReturnType<typeof vi.spyOn>;
-  let clickSpy: ReturnType<typeof vi.fn>;
-  let blobConstructorSpy: ReturnType<typeof vi.fn>;
+  let clickSpy: Mock;
+  let blobConstructorSpy: Mock<(content: BlobPart[], options?: BlobPropertyBag) => void>;
   let originalBlob: typeof Blob;
 
   beforeEach(() => {
@@ -121,9 +121,9 @@ describe('downloadSVG', () => {
     globalThis.Blob = class MockBlob extends originalBlob {
       constructor(content: BlobPart[], options?: BlobPropertyBag) {
         super(content, options);
-        blobConstructorSpy(content, options as BlobPropertyBag);  
+        blobConstructorSpy(content, options);
       }
-    } as any;
+    } as unknown as typeof Blob;
 
     // Mock URL methods
     createObjectURLMock = vi.fn(() => 'blob:mock-url');
@@ -156,21 +156,20 @@ describe('downloadSVG', () => {
   it('creates a blob with correct SVG content', () => {
     const runicObject: RunicObject = {
       inputValue: 123,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     downloadSVG(runicObject);
 
-    expect(blobConstructorSpy).toHaveBeenCalledWith(
-      ['<svg>test</svg>'],
-      { type: 'image/svg+xml;charset=utf-8' }
-    );
+    expect(blobConstructorSpy).toHaveBeenCalledWith(['<svg>test</svg>'], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
   });
 
   it('creates object URL from blob', () => {
     const runicObject: RunicObject = {
       inputValue: 5,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     downloadSVG(runicObject);
@@ -181,7 +180,7 @@ describe('downloadSVG', () => {
   it('creates download link with correct attributes', () => {
     const runicObject: RunicObject = {
       inputValue: 42,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     downloadSVG(runicObject);
@@ -189,7 +188,7 @@ describe('downloadSVG', () => {
     // Check if link was created and appended
     expect(appendChildSpy).toHaveBeenCalledTimes(1);
     const linkElement = appendChildSpy.mock.calls[0][0] as HTMLAnchorElement;
-    
+
     expect(linkElement.tagName).toBe('A');
     expect(linkElement.href).toBe('blob:mock-url');
     expect(linkElement.download).toBe('runa-42-lines.svg');
@@ -198,7 +197,7 @@ describe('downloadSVG', () => {
   it('triggers download by clicking the link', () => {
     const runicObject: RunicObject = {
       inputValue: 999,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     downloadSVG(runicObject);
@@ -209,7 +208,7 @@ describe('downloadSVG', () => {
   it('removes link from DOM after download', () => {
     const runicObject: RunicObject = {
       inputValue: 1,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     downloadSVG(runicObject);
@@ -222,7 +221,7 @@ describe('downloadSVG', () => {
   it('revokes object URL after download', () => {
     const runicObject: RunicObject = {
       inputValue: 7,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     downloadSVG(runicObject);
@@ -241,7 +240,7 @@ describe('downloadSVG', () => {
     testCases.forEach(({ inputValue, expectedFilename }) => {
       const runicObject: RunicObject = {
         inputValue,
-        svgString: '<svg>test</svg>'
+        svgString: '<svg>test</svg>',
       };
 
       downloadSVG(runicObject);
@@ -261,22 +260,21 @@ describe('downloadSVG', () => {
 
     const runicObject: RunicObject = {
       inputValue: 100,
-      svgString: complexSVG
+      svgString: complexSVG,
     };
 
     downloadSVG(runicObject);
 
-    expect(blobConstructorSpy).toHaveBeenCalledWith(
-      [complexSVG],
-      { type: 'image/svg+xml;charset=utf-8' }
-    );
+    expect(blobConstructorSpy).toHaveBeenCalledWith([complexSVG], {
+      type: 'image/svg+xml;charset=utf-8',
+    });
     expect(clickSpy).toHaveBeenCalled();
   });
 
   it('completes download sequence in correct order', () => {
     const runicObject: RunicObject = {
       inputValue: 5,
-      svgString: '<svg>test</svg>'
+      svgString: '<svg>test</svg>',
     };
 
     const callOrder: string[] = [];
@@ -306,12 +304,6 @@ describe('downloadSVG', () => {
 
     downloadSVG(runicObject);
 
-    expect(callOrder).toEqual([
-      'createObjectURL',
-      'appendChild',
-      'click',
-      'removeChild',
-      'revokeObjectURL'
-    ]);
+    expect(callOrder).toEqual(['createObjectURL', 'appendChild', 'click', 'removeChild', 'revokeObjectURL']);
   });
 });

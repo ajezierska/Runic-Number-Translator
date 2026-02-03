@@ -107,7 +107,7 @@ describe('lineMapper', () => {
     it('combines base lines with additional lines', () => {
       const additionalLines: RunicLineNumber[] = [1, 2];
       const result = getAllRunicLinesNumbers(additionalLines);
-      
+
       expect(result).toContain(10);
       expect(result).toContain(13);
       expect(result).toContain(16);
@@ -118,7 +118,7 @@ describe('lineMapper', () => {
     it('preserves order: base lines first, then additional', () => {
       const additionalLines: RunicLineNumber[] = [7, 8];
       const result = getAllRunicLinesNumbers(additionalLines);
-      
+
       expect(result[0]).toBe(10);
       expect(result[1]).toBe(13);
       expect(result[2]).toBe(16);
@@ -129,7 +129,7 @@ describe('lineMapper', () => {
     it('handles multiple additional lines', () => {
       const additionalLines: RunicLineNumber[] = [1, 2, 3, 4, 5];
       const result = getAllRunicLinesNumbers(additionalLines);
-      
+
       expect(result.length).toBe(8); // 3 base + 5 additional
     });
   });

@@ -42,29 +42,29 @@ describe('App', () => {
   it('updates display when valid number is entered', () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    
+
     fireEvent.change(input, { target: { value: '123' } });
-    
+
     const emptyMessage = screen.queryByText(/enter the correct number \(1-9999\) to see the rune/i);
     expect(emptyMessage).not.toBeInTheDocument();
   });
 
   it('has proper layout structure', () => {
     const { container } = render(<App />);
-    
+
     const header = container.querySelector('header');
     const main = container.querySelector('main');
-    
+
     expect(header).toBeInTheDocument();
     expect(main).toBeInTheDocument();
   });
 
   it('renders RunicForm and RunicDisplay components', () => {
     render(<App />);
-    
+
     const input = screen.getByRole('textbox');
     expect(input).toBeInTheDocument();
-    
+
     const display = screen.getByText(/enter the correct number \(1-9999\) to see the rune/i);
     expect(display).toBeInTheDocument();
   });
@@ -72,10 +72,10 @@ describe('App', () => {
   it('maintains state when switching between valid numbers', () => {
     render(<App />);
     const input = screen.getByRole('textbox');
-    
+
     fireEvent.change(input, { target: { value: '123' } });
     expect(input).toHaveValue('123');
-    
+
     fireEvent.change(input, { target: { value: '456' } });
     expect(input).toHaveValue('456');
   });

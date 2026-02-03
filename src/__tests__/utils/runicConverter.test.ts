@@ -15,9 +15,7 @@ describe('runicConverter', () => {
     it('converts 1991 to all modifiers', () => {
       const result = convertNumberToRune(1991);
       expect(result.number).toBe(1991);
-      expect(result.runicLineNumbers).toEqual(
-        expect.arrayContaining([1, 2, 7, 8, 9, 17, 10, 13, 16])
-      );
+      expect(result.runicLineNumbers).toEqual(expect.arrayContaining([1, 2, 7, 8, 9, 17, 10, 13, 16]));
     });
 
     it('converts 4723 to correct lines', () => {
@@ -74,10 +72,10 @@ describe('runicConverter', () => {
     it('splits 1991 into 4 digits', () => {
       const digits = splitNumberIntoDigits(1991);
       expect(digits).toEqual({
-        thousands: 1, 
-        hundreds: 9, 
-        tens: 9, 
-        units: 1
+        thousands: 1,
+        hundreds: 9,
+        tens: 9,
+        units: 1,
       });
     });
 
@@ -127,7 +125,7 @@ describe('runicConverter', () => {
         thousands: 5,
         hundreds: 4,
         tens: 3,
-        units: 2
+        units: 2,
       });
     });
   });

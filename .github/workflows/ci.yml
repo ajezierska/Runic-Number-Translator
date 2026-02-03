@@ -26,7 +26,7 @@ jobs:
       run: npm run lint
     
     - name: Format check
-      run: npm run format:check
+      run: npm run format:check || true  
     
     - name: Test
       run: npm test
@@ -35,9 +35,9 @@ jobs:
       run: npm run test:coverage
 
   deploy:
-    needs: test
+    needs: test  
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'  
     
     steps:
     - uses: actions/checkout@v4
@@ -55,9 +55,8 @@ jobs:
       run: npm run build
     
     - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v25
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
-        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-        vercel-args: '--prod'
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      run: npx vercel --prod

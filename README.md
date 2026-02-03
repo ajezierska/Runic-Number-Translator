@@ -50,6 +50,16 @@ npm run test:ui
 npm run test:coverage
 ```
 
+### Code Quality
+
+```bash
+# Run ESLint to check for code issues
+npm run lint
+
+# Run ESLint and automatically fix issues
+npm run lint:fix
+```
+
 
 ## 📁 Project Structure
 
@@ -75,4 +85,5 @@ runic-app/
 - **Build Tool**: Vite 7
 - **Styling**: Tailwind CSS 4
 - **Testing**: Vitest + React Testing Library
+- **Linting**: ESLint 9 with TypeScript and React plugins
 - **Version Control**: Git
